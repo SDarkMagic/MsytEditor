@@ -1,0 +1,19 @@
+[[package]]
+category = "main"
+description = "MSBT editing in Python using MSYT"
+name = "pymsyt"
+optional = false
+python-versions = "*"
+version = "0.3.2"
+
+[metadata]
+content-hash = "abd242e83ea5787be951f4775b8a1edf04ce108011ce8d9662fca29e7f1b021e"
+python-versions = "^3.8"
+
+[metadata.files]
+pymsyt = [
+    {file = "pymsyt-0.3.2-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:bd0cb81373cdff02941d66372c184754353b3afebfbe56a0ca28e8e01a15e5f9"},
+    {file = "pymsyt-0.3.2-cp37-none-win_amd64.whl", hash = "sha256:8bbe74a9740b61a982bfabdd7376fadfa8011d039efebf6a6b1f5d63c051e95f"},
+    {file = "pymsyt-0.3.2-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:b61492baaae234b6ed054c39968de07f84b171e398e386d09641c021decc8706"},
+    {file = "pymsyt-0.3.2-cp38-none-win_amd64.whl", hash = "sha256:d9dc39a8632f6891bb8155aeba5697b82a6b7bd913c13cb87242cef9939f596e"},
+]
