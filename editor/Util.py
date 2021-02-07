@@ -1,5 +1,6 @@
 import pymsyt
 import pathlib
+import oead
 
 def getMsbtAsDict(pathIn):
   fileLoc = pathlib.Path(pathIn)
@@ -10,5 +11,5 @@ def getMsbtAsDict(pathIn):
 class Msyt:
   def __init__(self, filePathIn):
     with open(pathlib.Path(filePathIn), 'rb') as readFile:
-      self.msbtDict = pymsyt.Msbt.from_binary(readFile.read())
-    print(self.mstbDict)
+      self.msbtDict = pymsyt.Msbt.from_binary(readFile.read()).to_dict()
+    print(self.msbtDict)
