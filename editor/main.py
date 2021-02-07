@@ -5,8 +5,11 @@ import pathlib
 import webview
 import threading
 
-Util.Msyt(pathlib.Path('../tests/Test.msbt'))
-webview.create_window('Botw Text Editor', './assets/MainWindow.html')
-windowThread = threading.Thread(webview.start())
-windowThread.start()
-print('e')
+def startup(window):
+    Util.Msyt(pathlib.Path('../tests/Test.msbt'))
+    with open('assets/Main.js', 'rt') as readJSCode:
+        JSCode = readJSCode.read()
+    window.evaluate_js(JSCode)
+
+window = webview.create_window('Botw Text Editor', './assets/MainWindow.html')
+webview.start(startup, window)
