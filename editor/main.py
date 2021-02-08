@@ -4,23 +4,31 @@ import os
 import pathlib
 import webview
 import threading
-import time
+import json
 import JSFunctions as js
 import FileHandling
 
 class ApiFunctions:
     window: webview.Window
 
+    def __init__(self):
+        self.Config = Util.config()
+
     def openFile(self):
-        FileHandling.openFile(self.window)
+        file = FileHandling.openFile(self.window)
+        data = Util.Msyt(pathlib.Path(file))
+        jsCode = js.updateEntries('EntryList', data.msbtDict)
+        self.window.evaluate_js(jsCode)
 
     def startup(self):
-        data = Util.Msyt(pathlib.Path('tests/Test.msbt'))
         with open('editor/assets/Main.js', 'rt') as readJSCode:
             JSCode = readJSCode.read()
         self.window.evaluate_js(JSCode)
-        self.window.evaluate_js(js.updateEntries('EntryList', data.msbtDict))
 
+    def getConfigData(self):
+        configData = self.Config.getConfigData()
+        configJson = json.dumps(configData)
+        return configJson
 
 def main():
     api = ApiFunctions()

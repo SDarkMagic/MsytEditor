@@ -1,3 +1,49 @@
+:root {
+    --bgColor: #29335e;
+}
+
 body {
-    background-color: rgb(41, 51, 94);
+    background-color: var(--bgColor);
+}
+
+.menuButton {
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    height: 35px;
+    font-size: 30px;
+    text-align: center;
+    vertical-align: center;
+}
+
+.container_left {
+    width: 25%;
+    max-width: 25%;
+    height: 100vh;
+    max-height: 100vh;
+    padding: 5px;
+    margin: 0px;
+    margin-right: 2px;
+    float: left;
+    border: none;
+    border-right: solid black 3px;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    direction: rtl;
+}
+
+.entryList_Text {
+    font-size: 2vw;
+    margin: 0px;
+    margin-right: 1px;
+    padding: 0px;
+    padding-right: 2px;
+    list-style: none;
+    direction: ltr;
+}
+
+.entryItem {
+    font-size: inherit;
+    font-family: Arial;
 }
