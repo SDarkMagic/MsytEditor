@@ -22,7 +22,7 @@ class ApiFunctions:
         self.window.evaluate_js(jsCode)
 
     def getEntry(self, entryName):
-        jsCode = js.updateEntryContent('EntryContentText', self.openData, entryName)
+        jsCode = js.updateEntryContent('content', self.openData, entryName)
         self.window.evaluate_js(jsCode)
 
     def startup(self):

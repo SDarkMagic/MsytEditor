@@ -1,3 +1,4 @@
+import Util
 # Creates a var called "element" from an elementId
 def getElementById(elementId):
     return f"var {elementId} = document.getElementById('{elementId}')"
@@ -41,11 +42,24 @@ def updateEntryContent(elementId, entries, entryName):
         {getElementById('attributes')}
         attributes.innerHTML = ``"""
 
+    def getControlTextPairs(entry: list):
+        entryHTML = str('')
+        for component in entry:
+            control, text = Util.checkDict_two(component, 'control', 'text')
+            print(control, text)
+            if control != None:
+                entryHTML = f'{entryHTML}<h4>{control}</h4>'
+            elif text != None:
+                entryHTML = f'{entryHTML}<textarea class="entryText" id="EntryContentText">{text}</textarea>'
+            else:
+                print('An error occured: Both values were None')
+        return entryHTML
+
     jsCode = f"""
     {getElementById('entryName')}
     entryName.innerText = `{entryName}`
     {attributesSection}
     {getElementById(elementId)}
-    {elementId}.innerText = `{entryContents}`
+    {elementId}.innerHTML = `{getControlTextPairs(entryContents)}`
     """
     return jsCode

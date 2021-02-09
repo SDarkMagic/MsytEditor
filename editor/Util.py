@@ -61,3 +61,14 @@ class config:
   def updateConfig(self, configData: dict):
     with open(self.configFile, 'wt') as writeConfig:
       writeConfig.write(json.dumps(configData))
+
+def checkDict_two(dictIn: dict, valA, valB):
+  try:
+    returnValA = dictIn[valA]
+  except:
+    returnValA = None
+  try:
+    returnValB = dictIn[valB]
+  except:
+    returnValB = None
+  return(returnValA, returnValB)

@@ -4,6 +4,7 @@
     --txtBoxFontSize: 6.600660066006601vh;
     --smallTxtBoxFontSize: 2.393399339933993vh;
     --buttonColor: #56007e;
+    --scndFontColor: #a8959e;
 }
 
 body {
@@ -77,6 +78,7 @@ body {
 .entryItem {
     font-size: inherit;
     font-family: Arial;
+    color: var(--scndFontColor)
 }
 
 .entryText {
