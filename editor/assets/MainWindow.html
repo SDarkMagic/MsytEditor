@@ -5,7 +5,17 @@
         <link rel='stylesheet' href="Main.css"></link>
     </head>
     <body id='body'>
-        <button class="menuButton" id='openFile'>Open a File</button>
+        <div class='toolbar'>
+            <button class="menuButton" id='openFile'>Open a File</button>
+            <button class="menuButton" id='reload'>Reload</button>
+        </div>
         <div class='container_left' id='EntryList'></div>
+        <div class='container_right' id='EntryContent'>
+            <h1 id='entryName'></h1>
+            <form class="editingContainer">
+                <div id='attributes'></div>
+                <textarea class='entryText' id='EntryContentText'></textarea>
+            </form>
+        </div>
     </body>
 </html>

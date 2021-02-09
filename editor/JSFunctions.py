@@ -22,3 +22,30 @@ def updateEntries(elementId, entries):
     {elementId}.innerHTML = `{htmlData}`
     """
     return jsCode
+
+def updateEntryContent(elementId, entries, entryName):
+    entryData = entries['entries'].get(entryName)
+    entryContents = entryData['contents']
+    try:
+        entryAttributes = entryData['attributes']
+    except:
+        entryAttributes = None
+
+    if entryAttributes != None:
+        attributesSection = f"""
+        {getElementById('attributes')}
+        attributes.innerHTML = `<h2 class='Heading'>Attributes:</h2><form><input class='generalInput' id='attributesField' value='{entryAttributes}'></form>`
+        """
+    else:
+        attributesSection = f"""
+        {getElementById('attributes')}
+        attributes.innerHTML = ``"""
+
+    jsCode = f"""
+    {getElementById('entryName')}
+    entryName.innerText = `{entryName}`
+    {attributesSection}
+    {getElementById(elementId)}
+    {elementId}.innerText = `{entryContents}`
+    """
+    return jsCode

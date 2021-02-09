@@ -17,7 +17,12 @@ class ApiFunctions:
     def openFile(self):
         file = FileHandling.openFile(self.window)
         data = Util.Msyt(pathlib.Path(file))
-        jsCode = js.updateEntries('EntryList', data.msbtDict)
+        self.openData = data.msbtDict
+        jsCode = js.updateEntries('EntryList', self.openData)
+        self.window.evaluate_js(jsCode)
+
+    def getEntry(self, entryName):
+        jsCode = js.updateEntryContent('EntryContentText', self.openData, entryName)
         self.window.evaluate_js(jsCode)
 
     def startup(self):
@@ -29,6 +34,10 @@ class ApiFunctions:
         configData = self.Config.getConfigData()
         configJson = json.dumps(configData)
         return configJson
+
+    def reloadWindow(self):
+        self.window.load_url('assets/MainWindow.html')
+        self.startup()
 
 def main():
     api = ApiFunctions()

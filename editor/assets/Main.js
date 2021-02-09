@@ -1,8 +1,13 @@
 let root = document.documentElement
-var button = document.getElementById('openFile')
+var openButton = document.getElementById('openFile')
+var reloadButton = document.getElementById('reload')
 
-button.addEventListener('click', async function (){
+openButton.addEventListener('click', async function (){
     await pywebview.api.openFile()
+})
+
+reloadButton.addEventListener('click', async function (){
+    await pywebview.api.reloadWindow()
 })
 
 async function updateConfig() {
@@ -14,12 +19,7 @@ async function updateConfig() {
     }
 };
 
-function updateEditor(entryName){
-    console.warn(entryName)
+async function updateEditor(entryName){
+    console.log(entryName)
+    await pywebview.api.getEntry(entryName)
 }
-
-/*
-button.addEventListener('mouseover', async function (){
-    await updateConfig()
-})
-*/

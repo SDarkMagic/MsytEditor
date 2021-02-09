@@ -1,13 +1,20 @@
 :root {
     --bgColor: #29335e;
+    --primFontColor: #eed1de;
+    --txtBoxFontSize: 6.600660066006601vh;
+    --smallTxtBoxFontSize: 2.393399339933993vh;
+    --buttonColor: #56007e;
 }
 
 body {
     background-color: var(--bgColor);
+    padding: 0px;
+    margin: 0px;
+    overflow-x: hidden;
 }
 
 .menuButton {
-    background-color: black;
+    background-color: var(--buttonColor);
     color: white;
     border: none;
     border-radius: 5px;
@@ -18,6 +25,7 @@ body {
 }
 
 .container_left {
+    display: inline-block;
     width: 25%;
     max-width: 25%;
     height: 100vh;
@@ -31,6 +39,29 @@ body {
     overflow-x: scroll;
     overflow-y: scroll;
     direction: rtl;
+}
+.container_right {
+    display: inline-block;
+    width: auto;
+    max-width: 75%;
+    height: 100vh;
+    max-height: 100vh;
+    padding: 5px;
+    margin: 0px;
+    margin-right: 2px;
+    /*float: right;*/
+    border: none;
+    direction: ltr;
+}
+
+.toolbar {
+    display: block;
+    position: relative;
+    width: 100vw;
+    max-height: 10%;
+    height: auto;
+    border: none;
+    margin: 0px;
 }
 
 .entryList_Text {
@@ -46,4 +77,38 @@ body {
 .entryItem {
     font-size: inherit;
     font-family: Arial;
+}
+
+.entryText {
+    width: 85%;
+    height: var(--txtBoxFontSize);
+    padding: 3px;
+    box-sizing: border-box;
+    border: none;
+    font-size: var(--smallTxtBoxFontSize);
+    resize: none;
+}
+
+.generalInput {
+    font-size: var(--smallTxtBoxFontSize);
+}
+
+#EntryContent {
+    float: right;
+    max-width: 70%;
+    width: 75vw;
+    height: 100vw;
+}
+
+.Heading {
+    font-size: 6vh;
+    font-family: Arial;
+    color: var(--primFontColor)
+}
+
+#entryName {
+    font-family: Arial;
+    font-size: 10vh;
+    color: var(--primFontColor);
+    margin: 0px;
 }
