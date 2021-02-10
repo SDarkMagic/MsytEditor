@@ -72,3 +72,8 @@ def checkDict_two(dictIn: dict, valA, valB):
   except:
     returnValB = None
   return(returnValA, returnValB)
+
+def getOptionsData():
+  with open(pathlib.Path('editor/assets/options.json'), 'rt') as readOptions:
+    options = json.loads(readOptions.read())
+  return options

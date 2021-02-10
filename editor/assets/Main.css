@@ -93,6 +93,11 @@ body {
 
 .generalInput {
     font-size: var(--smallTxtBoxFontSize);
+    display: inline-block;
+    font-size: var(--smallTxtBoxFontSize);
+    height: 5vh;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 #EntryContent {
@@ -105,6 +110,7 @@ body {
 .Heading {
     font-size: 6vh;
     font-family: Arial;
+    display: inline-block;
     color: var(--primFontColor)
 }
 

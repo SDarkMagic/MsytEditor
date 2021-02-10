@@ -1,4 +1,7 @@
 import Util
+import json
+import pathlib
+
 # Creates a var called "element" from an elementId
 def getElementById(elementId):
     return f"var {elementId} = document.getElementById('{elementId}')"
@@ -44,11 +47,26 @@ def updateEntryContent(elementId, entries, entryName):
 
     def getControlTextPairs(entry: list):
         entryHTML = str('')
+        controlOption = '<option value="{control}"{isSelected}>{control}</option>'
         for component in entry:
+            i = 0
             control, text = Util.checkDict_two(component, 'control', 'text')
-            print(control, text)
             if control != None:
-                entryHTML = f'{entryHTML}<h4>{control}</h4>'
+                controlOptions = Util.getOptionsData()
+                for option in controlOptions['control']:
+                    if i == 0:
+                        entryHTML = f'{entryHTML}<select id="controlType" name="controlType">'
+                    else:
+                        pass
+                    if option == control['kind']:
+                        entryHTML = f'{entryHTML}{controlOption.format(control=option, isSelected=" selected")}'
+                    else:
+                        entryHTML = f'{entryHTML}{controlOption.format(control=option, isSelected="")}'
+                    i += 1
+                    if i == len(controlOptions['control']):
+                        entryHTML = f'{entryHTML}</select>'
+                    else:
+                        pass
             elif text != None:
                 entryHTML = f'{entryHTML}<textarea class="entryText" id="EntryContentText">{text}</textarea>'
             else:

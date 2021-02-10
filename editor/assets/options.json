@@ -1,4 +1,18 @@
 {
-    "control": [
-    ]
+  "control": [
+    "set_colour",
+    "reset_colour",
+    "raw",
+    "variable",
+    "icon",
+    "animation",
+    "pause",
+    "auto_advance",
+    "choice",
+    "sound",
+    "text_size",
+    "single_choice",
+    "sound2",
+    "font"
+  ]
 }
