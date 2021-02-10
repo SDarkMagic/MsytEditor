@@ -5,6 +5,7 @@
     --smallTxtBoxFontSize: 2.393399339933993vh;
     --buttonColor: #56007e;
     --scndFontColor: #a8959e;
+    --borderColor: #000000;
 }
 
 body {
@@ -12,6 +13,7 @@ body {
     padding: 0px;
     margin: 0px;
     overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 .menuButton {
@@ -37,7 +39,7 @@ body {
     float: left;
     border: none;
     border-right: solid black 3px;
-    overflow-x: scroll;
+    overflow-x: hidden;
     overflow-y: scroll;
     direction: rtl;
 }
@@ -50,14 +52,14 @@ body {
     padding: 5px;
     margin: 0px;
     margin-right: 2px;
-    /*float: right;*/
     border: none;
     direction: ltr;
+    overflow-y: scroll;
 }
 
 .toolbar {
     display: block;
-    position: relative;
+    position: absolute;
     width: 100vw;
     max-height: 10%;
     height: auto;
@@ -89,6 +91,7 @@ body {
     border: none;
     font-size: var(--smallTxtBoxFontSize);
     resize: none;
+    display: block;
 }
 
 .generalInput {
@@ -108,15 +111,59 @@ body {
 }
 
 .Heading {
-    font-size: 6vh;
+    font-size: 3vw;
     font-family: Arial;
     display: inline-block;
-    color: var(--primFontColor)
+    color: var(--primFontColor);
+    margin-right: 0.1vw;
 }
 
 #entryName {
     font-family: Arial;
-    font-size: 10vh;
+    font-size: 3.5vw;
     color: var(--primFontColor);
     margin: 0px;
+}
+
+#controlType {
+    height: 3.1353135313531353vh;
+    font-size: 2.200214521452145vh;
+    margin: 2px;
+    margin-left: 0.25%;
+    margin-bottom: 5px;
+    margin-right: auto;
+    display: inline-block;
+}
+
+.controlHeading {
+    color: var(--primFontColor);
+    font-size: 3.1353135313531353vh;
+    font-family: Arial;
+    display: inline-block;
+    margin-right: 1%;
+    margin-left: 0.25%;
+    padding: 1px;
+    border: none;
+}
+
+.controlContainer {
+    display: block;
+    padding: 0px;
+    margin: 0px;
+}
+/*
+.entryContainer {
+    margin: 0px;
+    padding: 0px;
+    border-style: solid;
+    border-color: var(--borderColor);
+    border-width: 0.15vw;
+
+}
+*/
+
+#content {
+    height: 100%;
+    margin-bottom: 1%;
+    padding: 2px;
 }

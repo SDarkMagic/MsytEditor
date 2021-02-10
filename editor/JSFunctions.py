@@ -55,7 +55,7 @@ def updateEntryContent(elementId, entries, entryName):
                 controlOptions = Util.getOptionsData()
                 for option in controlOptions['control']:
                     if i == 0:
-                        entryHTML = f'{entryHTML}<select id="controlType" name="controlType">'
+                        entryHTML = f'{entryHTML}<div class="controlContainer"><h4 class="controlHeading">Controls:</h4><select id="controlType" name="controlType">'
                     else:
                         pass
                     if option == control['kind']:
@@ -64,7 +64,7 @@ def updateEntryContent(elementId, entries, entryName):
                         entryHTML = f'{entryHTML}{controlOption.format(control=option, isSelected="")}'
                     i += 1
                     if i == len(controlOptions['control']):
-                        entryHTML = f'{entryHTML}</select>'
+                        entryHTML = f'{entryHTML}</select></div>'
                     else:
                         pass
             elif text != None:
