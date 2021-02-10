@@ -27,57 +27,64 @@ def updateEntries(elementId, entries):
     """
     return jsCode
 
-def updateEntryContent(elementId, entries, entryName):
-    entryData = entries['entries'].get(entryName)
-    entryContents = entryData['contents']
-    try:
-        entryAttributes = entryData['attributes']
-    except:
-        entryAttributes = None
+class form:
+    def __init__(self, elementId, entries, entryName):
+        self.entries = entries
+        self.js = self.updateEntryContent(elementId, entries, entryName)
+        self.entry = entries['entries'][entryName]
+        print('Finished init of form class')
 
-    if entryAttributes != None:
-        attributesSection = f"""
-        {getElementById('attributes')}
-        attributes.innerHTML = `<h2 class='Heading'>Attributes:</h2><form><input class='generalInput' id='attributesField' value='{entryAttributes}'></form>`
+    def updateEntryContent(self, elementId, entries, entryName):
+        entryData = entries['entries'].get(entryName)
+        entryContents = entryData['contents']
+        try:
+            entryAttributes = entryData['attributes']
+        except:
+            entryAttributes = None
+
+        if entryAttributes != None:
+            attributesSection = f"""
+            {getElementById('attributes')}
+            attributes.innerHTML = `<h2 class='Heading'>Attributes:</h2><form><input class='generalInput' id='attributesField' value='{entryAttributes}'></form>`
+            """
+        else:
+            attributesSection = f"""
+            {getElementById('attributes')}
+            attributes.innerHTML = ``"""
+
+        def getControlTextPairs(entry: list):
+            entryHTML = str('')
+            controlOption = '<option value="{control}"{isSelected}>{control}</option>'
+            for component in entry:
+                i = 0
+                control, text = Util.checkDict_two(component, 'control', 'text')
+                if control != None:
+                    controlOptions = Util.getOptionsData()
+                    for option in controlOptions['control']:
+                        if i == 0:
+                            entryHTML = f'{entryHTML}<div class="controlContainer"><h4 class="controlHeading">Controls:</h4><select id="controlType" name="controlType">'
+                        else:
+                            pass
+                        if option == control['kind']:
+                            entryHTML = f'{entryHTML}{controlOption.format(control=option, isSelected=" selected")}'
+                        else:
+                            entryHTML = f'{entryHTML}{controlOption.format(control=option, isSelected="")}'
+                        i += 1
+                        if i == len(controlOptions['control']):
+                            entryHTML = f'{entryHTML}</select></div>'
+                        else:
+                            pass
+                elif text != None:
+                    entryHTML = f'{entryHTML}<textarea class="entryText" id="EntryContentText">{text}</textarea>'
+                else:
+                    print('An error occured: Both values were None')
+            return entryHTML
+
+        jsCode = f"""
+        {getElementById('entryName')}
+        entryName.innerText = `{entryName}`
+        {attributesSection}
+        {getElementById(elementId)}
+        {elementId}.innerHTML = `{getControlTextPairs(entryContents)}<input class="SubmitButton" type="submit" value="Save">`
         """
-    else:
-        attributesSection = f"""
-        {getElementById('attributes')}
-        attributes.innerHTML = ``"""
-
-    def getControlTextPairs(entry: list):
-        entryHTML = str('')
-        controlOption = '<option value="{control}"{isSelected}>{control}</option>'
-        for component in entry:
-            i = 0
-            control, text = Util.checkDict_two(component, 'control', 'text')
-            if control != None:
-                controlOptions = Util.getOptionsData()
-                for option in controlOptions['control']:
-                    if i == 0:
-                        entryHTML = f'{entryHTML}<div class="controlContainer"><h4 class="controlHeading">Controls:</h4><select id="controlType" name="controlType">'
-                    else:
-                        pass
-                    if option == control['kind']:
-                        entryHTML = f'{entryHTML}{controlOption.format(control=option, isSelected=" selected")}'
-                    else:
-                        entryHTML = f'{entryHTML}{controlOption.format(control=option, isSelected="")}'
-                    i += 1
-                    if i == len(controlOptions['control']):
-                        entryHTML = f'{entryHTML}</select></div>'
-                    else:
-                        pass
-            elif text != None:
-                entryHTML = f'{entryHTML}<textarea class="entryText" id="EntryContentText">{text}</textarea>'
-            else:
-                print('An error occured: Both values were None')
-        return entryHTML
-
-    jsCode = f"""
-    {getElementById('entryName')}
-    entryName.innerText = `{entryName}`
-    {attributesSection}
-    {getElementById(elementId)}
-    {elementId}.innerHTML = `{getControlTextPairs(entryContents)}`
-    """
-    return jsCode
+        return jsCode

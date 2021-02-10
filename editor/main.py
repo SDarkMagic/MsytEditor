@@ -22,7 +22,8 @@ class ApiFunctions:
         self.window.evaluate_js(jsCode)
 
     def getEntry(self, entryName):
-        jsCode = js.updateEntryContent('content', self.openData, entryName)
+        form = js.form('content', self.openData, entryName)
+        jsCode = form.js
         self.window.evaluate_js(jsCode)
 
     def startup(self):
