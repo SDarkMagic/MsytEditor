@@ -32,7 +32,6 @@ class form:
         self.entries = entries
         self.js = self.updateEntryContent(elementId, entries, entryName)
         self.entry = entries['entries'][entryName]
-        print('Finished init of form class')
 
     def updateEntryContent(self, elementId, entries, entryName):
         entryData = entries['entries'].get(entryName)

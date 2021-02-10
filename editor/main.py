@@ -40,6 +40,11 @@ class ApiFunctions:
         self.window.load_url('assets/MainWindow.html')
         self.startup()
 
+    def updateEntry(self, entryName, updatedEntry):
+        entries = self.openData['entries']
+        entries.update({entryName: updatedEntry})
+        self.openData.update({'entries': entries})
+
 def main():
     api = ApiFunctions()
     api.window = webview.create_window('Botw Text Editor', 'assets/MainWindow.html', js_api=api)
