@@ -30,6 +30,7 @@ def updateEntries(elementId, entries):
 class form:
     def __init__(self, elementId, entries, entryName):
         self.entries = entries
+        self.setupJS = self.updateEntryContent(elementId, entries, entryName)
         self.js = self.updateEntryContent(elementId, entries, entryName)
         self.entry = entries['entries'][entryName]
 
@@ -61,7 +62,7 @@ class form:
                     controlOptions = Util.getOptionsData()
                     for option in controlOptions['control']:
                         if i == 0:
-                            entryHTML = f'{entryHTML}<div class="controlContainer"><h4 class="controlHeading">Controls:</h4><select id="controlType" name="controlType">'
+                            entryHTML = f'{entryHTML}<div class="controlContainer"><h4 class="controlHeading">Controls:</h4><select class="controlType" id="control" name="controlType">'
                         else:
                             pass
                         if option == control['kind']:
@@ -74,7 +75,7 @@ class form:
                         else:
                             pass
                 elif text != None:
-                    entryHTML = f'{entryHTML}<textarea class="entryText" id="EntryContentText">{text}</textarea>'
+                    entryHTML = f'{entryHTML}<textarea class="entryText" id="text">{text}</textarea>'
                 else:
                     print('An error occured: Both values were None')
             return entryHTML
@@ -84,6 +85,56 @@ class form:
         entryName.innerText = `{entryName}`
         {attributesSection}
         {getElementById(elementId)}
-        {elementId}.innerHTML = `{getControlTextPairs(entryContents)}<input class="SubmitButton" type="submit" value="Save">`
+        {elementId}.innerHTML = `{getControlTextPairs(entryContents)}`
+        function updateEntry_JS(){r'{'}
+            var form = document.forms['entryContentForm']
+            var updatedEntryArray = []
+
+            for(var element in form.elements){r'{'}
+                element = form.elements[element];
+                let entrySubData = {r'{}'};
+                if(element.id == 'control'){r'{'}
+                    entrySubData['control'] = element.value
+                {r'}'}
+                else if(element.id == 'text'){r'{'}
+                    entrySubData['text'] = element.value
+                {r'}'}
+                else{r'{'}
+                    continue
+                {r'}'}
+                updatedEntryArray.push(entrySubData)
+            {r'}'}
+            console.warn(updatedEntryArray)
+            return updatedEntryArray
+        {r'}'}
+        {getElementById('submit')}
+        submit.addEventListener('click', async function(){r'{'}let updatedEntry = updateEntry_JS(); await pywebview.api.updateEntry('{entryName}', updatedEntry){r'}'})
+
         """
         return jsCode
+"""
+    def saveEntryData(self):
+        jsCode = f
+        function updateEntry(){r'{'}
+            var form = document.forms['entryContentForm']
+            var updatedEntryArray = []
+
+            for(var element in form.elements){r'{'}
+                element = form.elements[element];
+                let entrySubData = {r'{}'};
+                if(element.id == 'control'){r'{'}
+                    entrySubData['control'] = element.value
+                {r'}'}
+                else if(element.id == 'text'){r'{'}
+                    entrySubData['text'] = element.value
+                {r'}'}
+                else{r'{'}
+                    continue
+                {r'}'}
+                updatedEntryArray.push(entrySubData)
+            {r'}'}
+            console.warn(updatedEntryArray)
+        {r'}'}
+
+        return jsCode
+"""

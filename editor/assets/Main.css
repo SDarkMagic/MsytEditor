@@ -125,7 +125,7 @@ body {
     margin: 0px;
 }
 
-#controlType {
+.controlType {
     height: 3.1353135313531353vh;
     font-size: 2.200214521452145vh;
     margin: 2px;

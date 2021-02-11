@@ -7,6 +7,7 @@ import threading
 import json
 import JSFunctions as js
 import FileHandling
+import importlib
 
 class ApiFunctions:
     window: webview.Window
@@ -37,6 +38,7 @@ class ApiFunctions:
         return configJson
 
     def reloadWindow(self):
+        importlib.reload(js)
         self.window.load_url('assets/MainWindow.html')
         self.startup()
 
@@ -44,6 +46,7 @@ class ApiFunctions:
         entries = self.openData['entries']
         entries.update({entryName: updatedEntry})
         self.openData.update({'entries': entries})
+        print(self.openData)
 
 def main():
     api = ApiFunctions()
