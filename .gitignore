@@ -1,3 +1,6 @@
 .vscode
 *.pyc
 blob_storage
+Bootup_USen
+poetry.lock
+pyproject.toml
