@@ -94,7 +94,9 @@ class form:
                 element = form.elements[element];
                 let entrySubData = {r'{}'};
                 if(element.id == 'control'){r'{'}
-                    entrySubData['control'] = element.value
+                    let entrySubSubData = {r'{}'}
+                    entrySubSubData['kind'] = element.value
+                    entrySubData['control'] = entrySubSubData
                 {r'}'}
                 else if(element.id == 'text'){r'{'}
                     entrySubData['text'] = element.value
@@ -112,6 +114,8 @@ class form:
 
         """
         return jsCode
+
+
 """
     def saveEntryData(self):
         jsCode = f

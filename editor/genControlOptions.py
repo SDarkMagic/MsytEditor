@@ -5,6 +5,7 @@ import sys
 import json
 import numpy as np
 
+valDict = {}
 
 def genControlTypeList(dirIn: pathlib.Path, listIn=None):
     if listIn == None:
@@ -43,99 +44,73 @@ def genControlTypeList(dirIn: pathlib.Path, listIn=None):
         return controlList
 
     for file in dirIn.iterdir():
-        print(file.name)
         if file.is_dir():
             genControlTypeList(file, controlList)
         else:
             controlList.extend(handleFile(file))
     return controlList
 
-def genControlValueList(dirIn: pathlib.Path, controlType, listIn=None):
-    if listIn == None:
-        controlDict = {}
-    else:
-        controlDict = listIn
-
-    def extendNestedList(dictInA: dict, dictInB: dict):
-        dictC = {}
-        print(cleanList(list(np.append(list(dictInA.keys()), list(dictInB.keys())))))
-        keys = list(np.append(list(dictInA.keys()), list(dictInB.keys())))
-        if dictInA == dictInB:
-            dictC.update(dictInA)
-        else:
-            for key in keys:
-                if key in dictInB.keys() and key in dictInB.keys():
-                    currentObjA = dictInA[key]
-                    currentObjB = dictInB[key]
-                    print(currentObjA, currentObjB)
-                    if isinstance(currentObjA, list) and isinstance(currentObjB, list):
-                        currentObjA.extend(currentObjB)
-                        dictC.update({key: currentObjA})
-                    else:
-                        print('Error: dict values are not lists')
-                        if currentObjA == currentObjB:
-                            dictC.update({key: currentObjA})
-                        else:
-                            dictC.update({key: [currentObjA, currentObjB]})
-                elif key in dictInA.keys() and key not in dictInB.keys():
-                    print('Key in A')
-                    dictC.update({key: dictInA[key]})
-                elif key in dictInB.keys() and key not in dictInA.keys():
-                    print('key in B')
-                    dictC.update({key: dictInB[key]})
-                else:
-                    print('how did you get here? the key had to have been in one of the two dicts...')
-                    continue
-        print(dictC)
-        return dictC
-
+def genControlValueList(dirIn: pathlib.Path):
     def handleFile(file):
-        controlDict = {}
         with open(file, 'rb') as readData:
             msytData = pymsyt.Msbt.from_binary(readData.read())
             data = msytData.to_dict()
-        #print(data)
         entries = data['entries']
 
         for part in entries.keys():
             if isinstance(entries[part], dict):
                 if 'contents' in entries[part].keys():
                     contents = entries[part]['contents']
-                    for piece in contents:
-                        if isinstance(piece, dict):
-                            if 'control' in piece.keys():
-                                kind = piece['control'].get('kind')
-                                if kind == controlType:
-                                    keyTypes = list(piece['control'].keys())
-                                    keyTypes.remove('kind')
-                                    for key in keyTypes:
-                                        tempDict = {key: piece['control'].get(key)}
-                                        if key in controlDict:
-                                            controlDict.update(tempDict)
-                                        else:
-                                            controlDict.update(tempDict)
+                    for content in contents:
+                        if ('control') in content.keys():
+                            control = content['control']
+                            kind = control['kind']
+                            # Checks if the kind is in the dictionary, and if not, adds it
+                            if kind in valDict.keys():
+                                pass
                             else:
-                                continue
+                                valDict.update({kind: {}})
+
+                            subValDict = valDict[kind]
+
+                            for entry in control.keys():
+                                entryVal = control[entry]
+                                #print('entry:', entry, entryVal)
+                                if entry == 'kind':
+                                    continue
+                                else:
+                                    if entry in subValDict.keys():
+                                        optionList = subValDict.get(entry)
+                                    else:
+                                        optionList = []
+
+                                    if isinstance(entryVal, list):
+                                        optionList.extend(entryVal)
+                                    else:
+                                        optionList.append(entryVal)
+                                    optionList = cleanList(optionList)
+                                subValDict.update({entry: optionList})
+                            valDict.update({kind: subValDict})
                         else:
-                            print(f'not a dict {piece}')
                             continue
                 else:
                     continue
             else:
                 print(f'Not a dict {part}')
                 continue
-        return controlDict
+        return
 
     for file in dirIn.iterdir():
         if file.is_dir():
-            print(file.name)
-            genControlValueList(file, controlType, controlDict)
+            #print(file.name)
+            genControlValueList(file)
         else:
-            controlDict.update(handleFile(file))
-    return controlDict
+            handleFile(file)
+    #return controlDict
 
 def cleanList(listIn):
     finalList =[]
+    listIn = list(listIn)
     for i in listIn:
         if i not in finalList:
             finalList.append(i)
@@ -148,13 +123,13 @@ def main():
         jsonDict = json.loads(readJson.read())
     listOut = genControlTypeList(pathlib.Path(sys.argv[1]))
     cleansedList = cleanList(listOut)
-    for i in cleansedList:
-        vals = genControlValueList(pathlib.Path(sys.argv[1]), i)
-        print(vals)
-    #jsonDict.update({'control': cleansedList})
+    genControlValueList(pathlib.Path(sys.argv[1]))
+    #print('vals:', valDict)
+    jsonDict.update({'control': cleansedList})
+    jsonDict.update(valDict)
     #print(jsonDict)
-    #with open('assets/options.json', 'wt') as writeJson:
-        #writeJson.write(json.dumps(jsonDict, indent=2))
+    with open('assets/options.json', 'wt') as writeJson:
+        writeJson.write(json.dumps(jsonDict, indent=2))
 
 if __name__ == '__main__':
     main()
