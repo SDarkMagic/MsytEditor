@@ -9,6 +9,7 @@ import JSFunctions as js
 import FileHandling
 import importlib
 
+# Functions accessible to the UI Window's JS code
 class ApiFunctions:
     window: webview.Window
 
@@ -47,6 +48,12 @@ class ApiFunctions:
         entries.update({entryName: updatedEntry})
         self.openData.update({'entries': entries})
         print(self.openData)
+
+    def getControlOptions(self):
+        return json.dumps(Util.getOptionsData())
+
+    def cleanConsole(self):
+        print('\n\n\n\n\n\n\n\n\n')
 
 def main():
     api = ApiFunctions()

@@ -30,7 +30,7 @@ def updateEntries(elementId, entries):
 class form:
     def __init__(self, elementId, entries, entryName):
         self.entries = entries
-        self.setupJS = self.updateEntryContent(elementId, entries, entryName)
+        #self.setupJS = self.updateEntryContent(elementId, entries, entryName)
         self.js = self.updateEntryContent(elementId, entries, entryName)
         self.entry = entries['entries'][entryName]
 
@@ -54,38 +54,50 @@ class form:
 
         def getControlTextPairs(entry: list):
             entryHTML = str('')
+            controlOptions = Util.getOptionsData()
+            SelectIds = {}
             controlOption = '<option value="{control}"{isSelected}>{control}</option>'
+            i = 0
             for component in entry:
-                i = 0
                 control, text = Util.checkDict_two(component, 'control', 'text')
                 if control != None:
-                    controlOptions = Util.getOptionsData()
+                    # Sets up the selection menus with the correct item selected
+                    typeId = f'type_{i}'
+                    entryHTML = f'{entryHTML}<div class="controlContainer"><h4 class="controlHeading">Controls:</h4><select class="controlType" id="{typeId}" name="controlType">'
+                    j = 0
                     for option in controlOptions['control']:
-                        if i == 0:
-                            entryHTML = f'{entryHTML}<div class="controlContainer"><h4 class="controlHeading">Controls:</h4><select class="controlType" id="control" name="controlType">'
-                        else:
-                            pass
                         if option == control['kind']:
                             entryHTML = f'{entryHTML}{controlOption.format(control=option, isSelected=" selected")}'
                         else:
                             entryHTML = f'{entryHTML}{controlOption.format(control=option, isSelected="")}'
-                        i += 1
-                        if i == len(controlOptions['control']):
-                            entryHTML = f'{entryHTML}</select></div>'
+                        j += 1
+                        if j == len(controlOptions['control']):
+                            entryHTML = f'{entryHTML}</select>'
                         else:
                             pass
+                    if len(control.keys()) > 1:
+                        dataId = f'data_{i}'
+                        SelectIds.update({typeId: dataId})
+                        entryHTML = f'{entryHTML}<select class="controlType controlData" id="{dataId}" name="controlData"></select></div>'
+                    else:
+                        SelectIds.update({typeId: None})
+                        entryHTML = f'{entryHTML}</div>'
+                    i += 1
                 elif text != None:
                     entryHTML = f'{entryHTML}<textarea class="entryText" id="text">{text}</textarea>'
                 else:
                     print('An error occured: Both values were None')
-            return entryHTML
+            return entryHTML, SelectIds
 
+        entryHtml, selectIdsOut = getControlTextPairs(entryContents)
+        jsonSelectIds = json.dumps(selectIdsOut)
         jsCode = f"""
+        var selectIds = {jsonSelectIds}
         {getElementById('entryName')}
         entryName.innerText = `{entryName}`
         {attributesSection}
         {getElementById(elementId)}
-        {elementId}.innerHTML = `{getControlTextPairs(entryContents)}`
+        {elementId}.innerHTML = `{entryHtml}`
         function updateEntry_JS(){r'{'}
             var form = document.forms['entryContentForm']
             var updatedEntryArray = []
@@ -112,7 +124,27 @@ class form:
         {getElementById('submit')}
         submit.addEventListener('click', async function(){r'{'}let updatedEntry = updateEntry_JS(); await pywebview.api.updateEntry('{entryName}', updatedEntry){r'}'})
 
+        async function updateControlSubSelect(controlType, dataId) {r'{'}
+            console.warn(`${r'{'}controlType{r'}'} was changed`)
+            let dataSelect = document.getElementById(dataId)
+            dataSelect.length = 0
+            var rawData = await pywebview.api.getControlOptions()
+            var dataValues = JSON.parse(rawData)[controlType]
+            for (var value in dataValues){r'{'}
+                dataSelect.options[dataSelect.options.length] = new Option(value, value)
+            {r'}'}
+        {r'}'}
+
+        for(var x in Object.keys(selectIds)){r'{'}
+            let currentElement = document.getElementById(Object.keys(selectIds)[x])
+            currentElement.addEventListener('change', async function(){r'{'}
+                console.log('change detected')
+                await updateControlSubSelect(currentElement.value, selectIds[currentElement.id])
+            {r'}'})
+        {r'}'}
+
         """
+        print(selectIdsOut)
         return jsCode
 
 

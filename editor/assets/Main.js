@@ -1,6 +1,7 @@
 let root = document.documentElement
 var openButton = document.getElementById('openFile')
 var reloadButton = document.getElementById('reload')
+var cleanConsoleButton = document.getElementById('cleanConsole')
 
 openButton.addEventListener('click', async function (){
     await pywebview.api.openFile()
@@ -8,6 +9,10 @@ openButton.addEventListener('click', async function (){
 
 reloadButton.addEventListener('click', async function (){
     await pywebview.api.reloadWindow()
+})
+
+cleanConsoleButton.addEventListener('click', async function (){
+    await pywebview.api.cleanConsole()
 })
 
 async function updateConfig() {

@@ -59,7 +59,7 @@ body {
 
 .toolbar {
     display: block;
-    position: absolute;
+    position: relative;
     width: 100vw;
     max-height: 10%;
     height: auto;
